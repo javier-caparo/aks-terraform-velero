@@ -52,7 +52,15 @@ spec:
             logLevel: debug
         credentials:
           useSecret: true
-          existingSecretname: velero-credentials
+          name: cloud-credentials
+          secretContents:
+            cloud: |
+              AZURE_CLOUD_NAME=AzurePublicCloud
+              AZURE_SUBSCRIPTION_ID=
+              AZURE_TENANT_ID=
+              AZURE_CLIENT_SECRET=
+              AZURE_AKS_RESOURCE_GROUP=
+              AZURE_CLIENT_ID=118cf0be-fc98-4bc4-87b4-889bad0b1280
         backupsEnabled: true
         snapshotsEnabled: true
         schedules:
