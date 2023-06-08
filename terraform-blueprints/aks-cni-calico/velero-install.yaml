@@ -41,13 +41,13 @@ spec:
             accessMode: ReadWrite
             config:
               storageAccount: xkszhn57sd8dtzqgv51jnp29
-              resourceGroup: aks-calico
+              resourceGroup: aks-calicoaks-calico
           volumeSnapshotLocation:
           - name: snapshots
             provider: azure
             config:
               apiTimeout: 10m
-              resourceGroup: aks-velero-test
+              resourceGroup: aks-calico
             namespace: velero
             logLevel: debug
         credentials:
