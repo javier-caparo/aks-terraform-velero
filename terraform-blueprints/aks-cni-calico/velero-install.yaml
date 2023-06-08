@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero 
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velero
+  syncPolicy:
+   automated:
+    prune: true
+    selfHeal: true
+  source:
+    chart: velero
+    repoURL: https://vmware-tanzu.github.io/helm-charts
+    targetRevision: "4.0.3"
+    path: velero
+    helm:
+      values: |
+        resources:
+          requests:
+            cpu: 500m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        dnsPolicy: ClusterFirst
+        initContainers:
+          - name: velero-plugin-for-microsoft-azure
+            image: velero/velero-plugin-for-microsoft-azure:v1.6.2
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
+        configuration:
+          backupStorageLocation:
+          - name: 
+            provider: azure
+            bucket: velero
+            accessMode: ReadWrite
+            config:
+              storageAccount: xkszhn57sd8dtzqgv51jnp29
+              resourceGroup: aks-calico
+          volumeSnapshotLocation:
+          - name: snapshots
+            provider: azure
+            config:
+              apiTimeout: 10m
+              resourceGroup: aks-velero-test
+            namespace: velero
+            logLevel: debug
+        credentials:
+          useSecret: true
+          existingSecretname: velero-credentials
+        backupsEnabled: true
+        snapshotsEnabled: true
+        schedules:
+          velero-backup-test:
+            disabled: false
+            schedule: "0/5 1 * * *"  # 01:00 am every day
+            template:
+              ttl: "120h"
+              includedNamespaces:
+              - default
