@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "vnet" {
 
 # create acr Container registery
 resource "azurerm_container_registry" "acr" {
-  name                = "jcacr"
+  name                = "jcacr07062023"
   location            = azurerm_resource_group.vnet.location
   resource_group_name = azurerm_resource_group.vnet.name
   sku                 = "Standard"
