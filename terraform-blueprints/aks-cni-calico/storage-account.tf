@@ -5,7 +5,7 @@ resource "random_string" "random" {
 }
 
 resource "azurerm_storage_account" "velero" {
-  name                     = (var.sa_name== null ? random_string.random.result : var.sa_name)
+  name                     = (var.sa_name == null ? random_string.random.result : var.sa_name)
   resource_group_name      = azurerm_resource_group.vnet.name
   location                 = azurerm_resource_group.vnet.location
   account_tier             = "Standard"

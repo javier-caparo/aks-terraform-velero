@@ -60,4 +60,5 @@ variable "network_docker_bridge_cidr" {
 
 variable "sa_name" {
   description = "Storage accoutn name for velero"
+  default = null
 }
