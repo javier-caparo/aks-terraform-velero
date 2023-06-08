@@ -3,6 +3,15 @@ resource "azurerm_resource_group" "vnet" {
   location = var.location
 }
 
+# create acr Container registery
+resource "azurerm_container_registry" "acr" {
+  name                = "jcacr"
+  location            = azurerm_resource_group.vnet.location
+  resource_group_name = azurerm_resource_group.vnet.name
+  sku                 = "Standard"
+  admin_enabled       = false
+}
+
 module "aks_network" {
   source              = "./modules/vnet"
   resource_group_name = azurerm_resource_group.vnet.name
@@ -66,4 +75,12 @@ resource "azurerm_role_assignment" "netcontributor" {
   role_definition_name = "Network Contributor"
   scope                = module.aks_network.subnet_ids["aks-subnet"]
   principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+}
+
+# create role assignment for aks acr pull
+resource "azurerm_role_assignment" "aks_acr_pull" {
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.acr.id
+  skip_service_principal_aad_check = true
 }

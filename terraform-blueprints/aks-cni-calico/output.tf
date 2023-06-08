@@ -15,5 +15,5 @@ output "sp_velero" {
 
 output "sp_velero_password" {
   value     = azuread_service_principal_password.app_velero.value
-  sensitive = false
+  sensitive = true
 }
