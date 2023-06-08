@@ -29,7 +29,7 @@ spec:
         dnsPolicy: ClusterFirst
         initContainers:
           - name: velero-plugin-for-microsoft-azure
-            image: velero/velero-plugin-for-microsoft-azure:v1.6.2
+            image: velero/velero-plugin-for-microsoft-azure:v1.7.0
             volumeMounts:
               - mountPath: /target
                 name: plugins
@@ -42,12 +42,14 @@ spec:
             config:
               storageAccount: xkszhn57sd8dtzqgv51jnp29
               resourceGroup: aks-calicoaks-calico
+              subscriptionId: xxxxxxxxxxxxxx
           volumeSnapshotLocation:
           - name: snapshots
             provider: azure
             config:
               apiTimeout: 10m
               resourceGroup: aks-calico
+              subscriptionId: xxxxxxxxxxxxxx
             namespace: velero
             logLevel: debug
         credentials:
@@ -56,11 +58,11 @@ spec:
           secretContents:
             cloud: |
               AZURE_CLOUD_NAME=AzurePublicCloud
-              AZURE_SUBSCRIPTION_ID=
-              AZURE_TENANT_ID=
-              AZURE_CLIENT_SECRET=
-              AZURE_AKS_RESOURCE_GROUP=
-              AZURE_CLIENT_ID=118cf0be-fc98-4bc4-87b4-889bad0b1280
+              AZURE_SUBSCRIPTION_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+              AZURE_TENANT_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+              AZURE_CLIENT_SECRET=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+              AZURE_AKS_RESOURCE_GROUP=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+              AZURE_CLIENT_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         backupsEnabled: true
         snapshotsEnabled: true
         schedules:
